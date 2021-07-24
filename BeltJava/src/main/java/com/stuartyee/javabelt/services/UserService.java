@@ -2,6 +2,7 @@ package com.stuartyee.javabelt.services;
 
 import java.util.List;
 
+import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import com.stuartyee.javabelt.models.User;
@@ -12,16 +13,14 @@ import com.stuartyee.javabelt.validators.UserValidator;
 public class UserService {
 	
 	final private UserRepository uRepo;
-	final private UserValidator uValidator;
 	
-	public UserService(UserRepository uRepo, UserValidator uValidator) {
+	public UserService(UserRepository uRepo) {
 		this.uRepo = uRepo;
-		this.uValidator = uValidator;
 	}
 	
 	//Almost always need to find all users
 	public List<User> findAllUsers(){
-		return uRepo.findAllUsers();
+		return uRepo.findAll();
 	}
 	
 	//Almost always have to find user by ID
@@ -44,7 +43,35 @@ public class UserService {
 	
 	//Create or update
 	public void saveUser(User user) {
+		String hashpassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+		user.setPassword(hashpassword);
 		uRepo.save(user);
+	}
+	
+	//Find by email
+	
+	public User findUserByEmail(String email) {
+		if(existsByEmail(email)) {
+			return uRepo.findUserByEmail(email);
+		} else {
+			return null;
+		}
+	}
+	
+	//check password for users logggin in
+	public boolean authenticateUser(String email, String password) {
+		User user = uRepo.findUserByEmail(email);
+		if(user == null) {
+			return false;
+		} else {
+			if(BCrypt.checkpw(password, user.getPassword())) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	}
 
 }
+
+	

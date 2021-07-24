@@ -1,0 +1,20 @@
+#logregwrapper {
+	display: flex;
+	justify-content: center;
+	
+}
+
+.logregcol {
+	margin: 20px;
+	width: 320px
+	
+}
+
+.formLine {
+	display: flex;
+	justify-content: space-between;
+}
+
+.error {
+	color: red;
+}
