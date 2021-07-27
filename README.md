@@ -1,2 +1,2 @@
 # javabelt
-Demonstration of Java RESTful proficiency utilizing Spring Boot
+Demonstration of Java MVC design pattern proficiency utilizing Spring Boot

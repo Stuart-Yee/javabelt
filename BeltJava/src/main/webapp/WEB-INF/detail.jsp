@@ -17,7 +17,9 @@
 	<thead><tr><th>Name</th></tr></thead>
 	<tbody>
 		<c:forEach items="${thisIdea.likers }" var="person">
+			<tr><td>
 			<c:out value="${person.name }"/>
+			</td></tr>
 		</c:forEach>
 	</tbody>
 </table>

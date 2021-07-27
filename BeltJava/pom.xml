@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.stuartyee.javabelt</groupId>
 	<artifactId>BeltJava</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-IDEAS</version>
 	<name>BeltJava</name>
 	<description>Demonstration of Java Proficiency with Spring Boot</description>
 	<properties>
@@ -84,4 +84,5 @@
 		</plugins>
 	</build>
 
+	<packaging>war</packaging>
 </project>

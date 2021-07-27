@@ -1,6 +1,7 @@
 #logregwrapper {
 	display: flex;
 	justify-content: center;
+	background-color: rgb(233,235,238);
 	
 }
 
@@ -8,6 +9,10 @@
 	margin: 20px;
 	width: 320px
 	
+}
+
+.logregcol button {
+	float: right;
 }
 
 .formLine {

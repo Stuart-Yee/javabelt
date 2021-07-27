@@ -7,9 +7,16 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <title>Ideas</title>
 </head>
 <body>
+	<div class="jumbotron jumbotron-fluid">
+  		<div class="container">
+    		<h1 class="display-4">Great Ideas</h1>
+    		<p class="lead">Dream up ideas and collaborate!</p>
+  		</div>
+	</div>
 	<div id="logregwrapper">
 		<div class="logregcol">
 			<h1>Register</h1>
@@ -34,7 +41,7 @@
 					<span class="error"><form:errors path="passwordConfirm"/></span>
 					<form:input type="password" path="passwordConfirm"/>
 				</p>
-				<input type="submit" value="Register"/>
+				<button class="btn btn-outline-primary">Register</button>
 			
 			</form:form>
 		
@@ -43,15 +50,16 @@
 			<h1>Login</h1>
 			<form method="POST" action="/login">
 				<p class="formLine">
-					<span class="error"><c:out value="${loginError }"/></span>
+					
 					<label for="logEmail">Email:</label>
 					<input name="logEmail" type="email">
 				</p>
+				<p><span class="error"><c:out value="${loginError }"/></span></p>
 				<p class="formLine">
 					<label for="logPassword">Password:</label>
 					<input name="logPassword" type="password">
 				</p>
-				<button>Login</button>
+				<button class="btn btn-outline-success">Login</button>
 			
 			</form>
 		</div>
