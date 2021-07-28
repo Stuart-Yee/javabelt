@@ -63,8 +63,9 @@
 			
 			</form>
 		</div>
+		
 	
 	</div>
-
+	<img src="/images/image1.png" alt="collaboration" class="stockimg">
 </body>
 </html>

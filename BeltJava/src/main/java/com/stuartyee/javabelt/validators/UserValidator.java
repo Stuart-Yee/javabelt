@@ -32,6 +32,10 @@ public class UserValidator implements Validator{
         if (uServ.existsByEmail(user.getEmail())) {
         	errors.rejectValue("email", "Match", "This user already exists");
         }
+        
+        if(user.getName().contains("<script")) {
+        	errors.rejectValue("name", "Forbidden", "Don't do that!");
+        }
     }
 
 }

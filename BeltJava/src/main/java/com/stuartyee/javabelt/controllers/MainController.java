@@ -20,6 +20,7 @@ import com.stuartyee.javabelt.models.Idea;
 import com.stuartyee.javabelt.models.User;
 import com.stuartyee.javabelt.services.IdeaService;
 import com.stuartyee.javabelt.services.UserService;
+import com.stuartyee.javabelt.validators.IdeaValidator;
 import com.stuartyee.javabelt.validators.UserValidator;
 
 @Controller
@@ -31,13 +32,16 @@ public class MainController {
 	private final UserValidator uVal;
 	@Autowired
 	private final IdeaService iServ;
+	@Autowired
+	private final IdeaValidator iVal;
 	
 	
 	
-	public MainController(UserService uServ, UserValidator uVal, IdeaService iServ) {
+	public MainController(UserService uServ, UserValidator uVal, IdeaService iServ, IdeaValidator iVal) {
 		this.uServ = uServ;
 		this.uVal = uVal;
 		this.iServ = iServ;
+		this.iVal = iVal;
 	}
 
 	//Get and Post pair for Login/Registration Page
@@ -98,8 +102,11 @@ public class MainController {
 	
 	@PostMapping("/ideas/new")
 	public String saveNewIdea(@Valid @ModelAttribute("newIdea") Idea idea, BindingResult result, HttpSession session) {
+		iVal.validate(idea, result);
 		if(session.getAttribute("UserId") == null) {
 			return "redirect:/";
+		} else if (result.hasErrors()) {
+			return "newIdea.jsp";
 		} else {
 			User user = uServ.findById((Long)session.getAttribute("UserId"));
 			iServ.createIdea(user, idea);
@@ -123,7 +130,7 @@ public class MainController {
 	}
 	
 	@GetMapping("ideas/{id}/edit")
-	public String editScreen(@PathVariable("id") Long id, Model model, HttpSession session) {
+	public String editScreen(@ModelAttribute("thisIdea") Idea idea, @PathVariable("id") Long id, Model model, HttpSession session) {
 
 		Long user__id = (Long)session.getAttribute("UserId");
 		Long creator__id = iServ.findIdeaById(id).getCreator().getId();
@@ -133,31 +140,33 @@ public class MainController {
 			model.addAttribute("thisIdea", iServ.findIdeaById(id));
 			return "editIdea.jsp";
 		} else {
-			System.out.println(user__id);
-			System.out.println(user__id.TYPE);
-			System.out.println(creator__id);
-			System.out.println(creator__id.TYPE);
 			return "redirect:/ideas";
 			
 		}
 	}
 	
 	@PostMapping("ideas/{id}/edit")
-	public String updateIdea(@PathVariable("id") Long id, @RequestParam("entry") String entry) {
-		Idea idea = iServ.findIdeaById(id);
-		idea.setName(entry);
-		iServ.editIdea(idea);
-		return "redirect:/ideas";
+	public String updateIdea(@Valid @ModelAttribute("thisIdea") Idea idea, BindingResult result, @PathVariable("id") Long id) {
+		iVal.validate(idea, result);
+		if(result.hasErrors()) {
+			return "editIdea.jsp";
+		} else {
+			iServ.editIdea(idea, id);
+			return "redirect:/ideas";
+		}
 	}
 	
 	@RequestMapping(value="ideas/{id}/delete")
 	public String deleteIdea(@PathVariable("id") Long id, HttpSession session) {
 		if(session.getAttribute("UserId") == null) {
+			System.out.println("Not logged in to delete");
 			return "redirect:/";
 		} else if ((Long)session.getAttribute("UserId") == iServ.findIdeaById(id).getCreator().getId()){
+			System.out.println("deleting now");
 			iServ.deleteIdea(iServ.findIdeaById(id));
 			return "redirect:/ideas";
 		} else {
+			System.out.println("You're not the daddy!");
 			return "redirect:/ideas";
 		}
 	}

@@ -12,16 +12,15 @@
 <body>
 <h1><c:out value="${thisIdea.name}"/></h1>
 
-<form method="POST" action="/ideas/${thisIdea.id }/edit">
+<form:form method="POST" action="/ideas/${thisIdea.id}/edit" modelAttribute="thisIdea">
 	<p>
-		<label for="entry">Content:</label>
-		
-		<textarea name="entry">${thisIdea.name }</textarea>
+		<form:label path="name">Content:</form:label>
 		<span class="error"><form:errors path="name"/></span>
+		<form:textarea path="name"/>
 	</p>
-	<button>Update</button>
+	<input type="submit" value="Update">
 
-<form>
+</form:form>
 <a href="/ideas/${thisIdea.id }/delete">Delete</a>
 
 </body>

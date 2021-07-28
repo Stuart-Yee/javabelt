@@ -23,3 +23,12 @@
 .error {
 	color: red;
 }
+
+.stockimg {
+	margin-top: 20px;
+	width: 80%;
+	border-radius: 10px;
+	display: block;
+  	margin-left: auto;
+  	margin-right: auto;
+}

@@ -74,7 +74,11 @@ public class IdeaService {
 		}
 	}
 	
-	public void editIdea(Idea idea) {
+	public void editIdea(Idea idea, Long id) {
+		Idea dbIdea = iRepo.findById(id).get();
+		idea.setCreator(dbIdea.getCreator());
+		idea.setLikers(dbIdea.getLikers());
+		idea.setNumberOfLikes(dbIdea.getNumberOfLikes());
 		iRepo.save(idea);
 	}
 	
