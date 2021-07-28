@@ -2,14 +2,17 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix = "t" tagdir = "/WEB-INF/tags" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
-<title>Ideas</title>
+	<meta charset="ISO-8859-1">
+	<link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
+	<title>Ideas</title>
 </head>
 <body>
+<t:nav>
 <h1>Create a New Idea</h1>
 <form:form method="POST" action="/ideas/new" modelAttribute="newIdea">
 	<p>
@@ -20,6 +23,6 @@
 	<input type="submit" value="Create">
 
 </form:form>
-
+</t:nav>
 </body>
 </html>

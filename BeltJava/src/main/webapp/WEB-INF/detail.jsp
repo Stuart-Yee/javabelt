@@ -2,18 +2,21 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix = "t" tagdir = "/WEB-INF/tags" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
-<title>Ideas</title>
+	<meta charset="ISO-8859-1">
+	<link rel="stylesheet" type="text/css" href="/css/stylesheet.css">
+	<title>Ideas</title>
 </head>
 <body>
-<h1><c:out value="${thisIdea.name }"/></h1>
-<p><h3>Created By: <c:out value="${thisIdea.creator.name}"/></h3></p>
-<h2>Users who liked your idea:</h2>
-<table>
+<t:nav>
+<h2><c:out value="${thisIdea.name }"/></h2>
+<p><h4>Created By: <c:out value="${thisIdea.creator.name}"/></h4></p>
+<h4>Users who liked your idea:</h4>
+<table class="table">
 	<thead><tr><th>Name</th></tr></thead>
 	<tbody>
 		<c:forEach items="${thisIdea.likers }" var="person">
@@ -30,7 +33,7 @@
 	<c:otherwise>
 	</c:otherwise>
 </c:choose>
-
+</t:nav>
 
 </body>
 </html>
