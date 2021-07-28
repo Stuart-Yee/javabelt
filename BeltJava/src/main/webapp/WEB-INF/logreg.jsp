@@ -14,7 +14,8 @@
 	<div class="jumbotron jumbotron-fluid">
   		<div class="container">
     		<h1 class="display-4">Great Ideas</h1>
-    		<p class="lead">Dream up ideas and collaborate!</p>
+    		<p class="lead">Create. Collaborate. Innovate.</p>
+    		<a href="/guest">Login as Guest</a>
   		</div>
 	</div>
 	<div id="logregwrapper">

@@ -43,6 +43,32 @@ public class MainController {
 		this.iServ = iServ;
 		this.iVal = iVal;
 	}
+	
+	private boolean guestLoggedIn(HttpSession session) {
+		if((long)session.getAttribute("UserId") == 0){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	private User createGuest() {
+		User guest = new User();
+		guest.setName("Guest");
+		guest.setId((long) 0);
+		return guest;
+		
+	}
+	
+	private User setUser(HttpSession session) {
+		User user;
+		if(guestLoggedIn(session)) {
+			user = createGuest();
+		} else {
+			user = uServ.findById((Long)session.getAttribute("UserId"));
+		}
+		return user;
+	}
 
 	//Get and Post pair for Login/Registration Page
 	@GetMapping("/")
@@ -52,13 +78,14 @@ public class MainController {
 	}
 	
 	@PostMapping("/")
-	public String register(@Valid @ModelAttribute("newUser") User user, BindingResult result) {
+	public String register(@Valid @ModelAttribute("newUser") User user, BindingResult result, HttpSession session) {
 		uVal.validate(user, result);
 		if (result.hasErrors()){
 			return "logreg.jsp";
 		} else {
 			uServ.saveUser(user);
-			return "redirect:/"; 
+			session.setAttribute("UserId", user.getId());
+			return "redirect:/ideas"; 
 		}
 		
 	}
@@ -77,13 +104,21 @@ public class MainController {
 		}
 	}
 	
+	//guest login
+	@RequestMapping("/guest")
+	public String guestLogIn(HttpSession session) {
+		session.setAttribute("UserId", (long)0);
+		return "redirect:/ideas";
+	}
+	
 	//Got to ideas page
 	@GetMapping("/ideas")
 	public String gotoIdeas(HttpSession session, Model model) {
 		if(session.getAttribute("UserId") == null) {
 			return "redirect:/";
 		} else {
-			User user = uServ.findById((Long)session.getAttribute("UserId"));
+			User user = setUser(session);
+			
 			model.addAttribute("loggedIn", user);
 			model.addAttribute("ideas", iServ.findAllIdeas()); //for now, just spit out all ideas
 			return "ideas.jsp";
@@ -93,7 +128,7 @@ public class MainController {
 	//new idea GET and POST pair for MVC form
 	@GetMapping("/ideas/new")
 	public String draftNewIdea(@ModelAttribute("newIdea") Idea idea, HttpSession session) {
-		if(session.getAttribute("UserId") == null) {
+		if((session.getAttribute("UserId") == null) || guestLoggedIn(session)) {
 			return "redirect:/";
 		} else {
 			return "newIdea.jsp";
@@ -108,7 +143,7 @@ public class MainController {
 		} else if (result.hasErrors()) {
 			return "newIdea.jsp";
 		} else {
-			User user = uServ.findById((Long)session.getAttribute("UserId"));
+			User user = setUser(session);
 			iServ.createIdea(user, idea);
 
 			return "redirect:/ideas";
@@ -121,7 +156,7 @@ public class MainController {
 		if(session.getAttribute("UserId") == null) {
 			return "redirect:/";
 		} else {
-			User user = uServ.findById((Long)session.getAttribute("UserId"));
+			User user = setUser(session);
 			model.addAttribute("thisIdea", iServ.findIdeaById(id));
 			model.addAttribute("loggedIn", user);
 
@@ -158,7 +193,7 @@ public class MainController {
 	
 	@RequestMapping(value="ideas/{id}/delete")
 	public String deleteIdea(@PathVariable("id") Long id, HttpSession session) {
-		if(session.getAttribute("UserId") == null) {
+		if((session.getAttribute("UserId") == null) || guestLoggedIn(session)) {
 			System.out.println("Not logged in to delete");
 			return "redirect:/";
 		} else if ((Long)session.getAttribute("UserId") == iServ.findIdeaById(id).getCreator().getId()){
@@ -174,16 +209,20 @@ public class MainController {
 	@RequestMapping(value="/like/{number}")
 	public String like(@PathVariable("number") Long id, HttpSession session) {
 		Long user__id = (Long)session.getAttribute("UserId");
-		User user = uServ.findById((Long)session.getAttribute("UserId"));
+		User user = setUser(session);
 		Idea idea = iServ.findIdeaById(id);
 		///
-		if(idea.getLikers().contains(user)) {
-			iServ.unlike(user, idea);
+		if(guestLoggedIn(session)) {
+			return "redirect:/ideas";
 		} else {
-			iServ.like(user, idea);
-		}
+			if(idea.getLikers().contains(user)) {
+				iServ.unlike(user, idea);
+			} else {
+				iServ.like(user, idea);
+			}
 
-		return "redirect:/ideas";
+			return "redirect:/ideas";
+		}
 	}
 	
 	//logout

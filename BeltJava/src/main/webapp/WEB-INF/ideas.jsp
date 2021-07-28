@@ -34,11 +34,18 @@
 				<td>${idea.creator.name }</td><td>${ idea.numberOfLikes}</td>
 				<td><a href="/like/${idea.id}">
 				<c:choose>
-					<c:when test="${idea.likers.contains(loggedIn) }">Unlike
+					<c:when test="${loggedIn.id == 0}">
+					Login to Like
 					</c:when>
-					<c:otherwise>
-					Like
-					</c:otherwise>
+					<c:otherwise>				
+					<c:choose>
+						<c:when test="${idea.likers.contains(loggedIn) }">Unlike
+						</c:when>
+						<c:otherwise>
+						Like
+						</c:otherwise>
+					</c:choose>		
+					</c:otherwise>			
 				</c:choose>
 				
 				
@@ -47,7 +54,15 @@
 				</c:forEach>
 			</tbody>
 		</table>
-		<p><a href="/ideas/new">Create an Idea</a></p>
+		<c:choose>
+			<c:when test="${loggedIn.id == 0}">
+				<p>Login to Create a New Idea</p>
+			</c:when>
+			<c:otherwise>
+				<p><a href="/ideas/new">Create an Idea</a></p>
+			</c:otherwise>
+		</c:choose>
+		
 		
 		<p><a href="/logout">Logout</a></p>
 	</div>
