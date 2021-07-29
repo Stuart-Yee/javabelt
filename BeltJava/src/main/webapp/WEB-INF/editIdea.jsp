@@ -13,6 +13,7 @@
 </head>
 <body>
 <t:nav>
+<div class="content">
 <h1><c:out value="${thisIdea.name}"/></h1>
 
 <form:form method="POST" action="/ideas/${thisIdea.id}/edit" modelAttribute="thisIdea">
@@ -25,6 +26,7 @@
 
 </form:form>
 <a href="/ideas/${thisIdea.id }/delete">Delete</a>
+</div>
 </t:nav>
 </body>
 </html>

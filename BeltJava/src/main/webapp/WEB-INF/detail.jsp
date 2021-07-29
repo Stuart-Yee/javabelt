@@ -13,6 +13,7 @@
 </head>
 <body>
 <t:nav>
+<div class="content">
 <h2><c:out value="${thisIdea.name }"/></h2>
 <p><h4>Created By: <c:out value="${thisIdea.creator.name}"/></h4></p>
 <h4>Users who liked your idea:</h4>
@@ -33,6 +34,7 @@
 	<c:otherwise>
 	</c:otherwise>
 </c:choose>
+</div>
 </t:nav>
 
 </body>

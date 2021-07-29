@@ -13,6 +13,7 @@
 </head>
 <body>
 <t:nav>
+<div class="content">
 <h1>Create a New Idea</h1>
 <form:form method="POST" action="/ideas/new" modelAttribute="newIdea">
 	<p>
@@ -23,6 +24,7 @@
 	<input type="submit" value="Create">
 
 </form:form>
+</div>
 </t:nav>
 </body>
 </html>

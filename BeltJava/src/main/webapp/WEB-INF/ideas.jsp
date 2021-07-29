@@ -18,6 +18,7 @@
 <body>
 	
 	<t:nav>
+	<div class="content">
 		<div id="ideasBar">
 			<h2>Ideas</h2>
 			<ul>
@@ -59,7 +60,7 @@
 
 		
 		
-		
+		</div>
 	</t:nav>
 
 </body>
