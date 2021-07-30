@@ -50,7 +50,7 @@
 						 | <a href="/users/promote/${user.id }">Promote</a>
 					</c:when>
 					<c:otherwise>				
-					
+						| Already Admin
 					</c:otherwise>			
 				</c:choose>
 				

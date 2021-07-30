@@ -329,6 +329,8 @@ public class MainController {
 		if(result.hasErrors()) {
 			return "editUser.jsp";
 		} else {
+			int permissions = this.uServ.findById(id).getPermissions();
+			user.setPermissions(permissions);
 			this.uServ.updateUser(user);
 			return "redirect:/ideas";
 		}
