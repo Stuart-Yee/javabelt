@@ -59,3 +59,17 @@
 	padding: 20px;
 	background-image: linear-gradient(white, rgb(231,233,235, .5), rgb(200,219,235, .5));
 }
+
+#userEdit {
+	width: 300px;
+}
+
+.bulb {
+	width: 80px;
+}
+
+.bulb, .jumboText {
+	vertical-align: middle;
+	display: inline-block;
+}
+

@@ -127,10 +127,12 @@ public class MainController {
 	
 	//new idea GET and POST pair for MVC form
 	@GetMapping("/ideas/new")
-	public String draftNewIdea(@ModelAttribute("newIdea") Idea idea, HttpSession session) {
+	public String draftNewIdea(@ModelAttribute("newIdea") Idea idea, HttpSession session, Model model) {
 		if((session.getAttribute("UserId") == null) || guestLoggedIn(session)) {
 			return "redirect:/";
 		} else {
+			User user = setUser(session);
+			model.addAttribute("loggedIn", user);
 			return "newIdea.jsp";
 		}
 	}
@@ -144,6 +146,7 @@ public class MainController {
 			return "newIdea.jsp";
 		} else {
 			User user = setUser(session);
+			
 			iServ.createIdea(user, idea);
 
 			return "redirect:/ideas";
@@ -172,6 +175,8 @@ public class MainController {
 		if(session.getAttribute("UserId") == null) {
 			return "redirect:/";
 		} else if (user__id.intValue() == creator__id.intValue()) {
+			User user = setUser(session);
+			model.addAttribute("loggedIn", user);
 			model.addAttribute("thisIdea", iServ.findIdeaById(id));
 			return "editIdea.jsp";
 		} else {
@@ -257,6 +262,80 @@ public class MainController {
 			return "ideas.jsp";
 		}
 	}
+	
+	@RequestMapping("/users")
+	public String usersPage(HttpSession session, Model model) {
+		if (session.getAttribute("UserId") == null ||
+				(guestLoggedIn(session) || 
+						setUser(session).getPermissions() == 0) ){
+			return "redirect:/";
+		} else {
+			User user = setUser(session);
+			model.addAttribute("loggedIn", user);
+			model.addAttribute("users", uServ.findAllUsers());
+			return "users.jsp";
+		}
+	}
+	
+	//Removes admin privileges from the logged in user's own login
+	@RequestMapping("/users/demote")
+	public String demote(HttpSession session) {
+		User user = setUser(session);
+		uServ.demoteUser(user);
+		return "redirect:/ideas";
+	}
+	
+	//gives admin privileges to a given user
+	@RequestMapping("/users/promote/{id}")
+	public String promote(@PathVariable("id") Long id, HttpSession session) {
+		User user = setUser(session);
+		if((session.getAttribute("UserId") == null) || guestLoggedIn(session) || user.getPermissions() == 0) {
+			return "redirect:/";
+		} else {
+			User client = uServ.findById(id);
+			uServ.promoteUser(client);
+			return "redirect:/users";
+		}
+	}
+	
+	//changes a user's password to "password"
+	@RequestMapping("/users/reset/{id}")
+	public String simpleReset(@PathVariable("id") Long id, HttpSession session) {
+		User user = setUser(session);
+		if((session.getAttribute("UserId") == null) || guestLoggedIn(session) || user.getPermissions() == 0) {
+			return "redirect:/";
+		} else {
+			User client = uServ.findById(id);
+			uServ.simplePasswordReset(client);
+			return "redirect:/users";
+		}
+	}
+	
+	//get and post mapping pair to edit a user
+	@GetMapping("/users/{id}/edit")
+	public String userEdit(@ModelAttribute("thisUser") User user, Model model, HttpSession session, @PathVariable("id") Long id) {
+		if((session.getAttribute("UserId") == null) | guestLoggedIn(session)) {
+			return "redirect:/";
+		} else {
+
+			model.addAttribute("thisUser", this.uServ.findById(id));
+			return "editUser.jsp";
+		}
+	}
+	
+	@PostMapping ("/users/{id}/edit")
+	public String userUpdate(@Valid @ModelAttribute("thisUser") User user, BindingResult result, HttpSession session, @PathVariable("id") Long id) {
+		uVal.validateEdit(user, result);
+		if(result.hasErrors()) {
+			return "editUser.jsp";
+		} else {
+			this.uServ.updateUser(user);
+			return "redirect:/ideas";
+		}
+		
+	}
+	
+
 	
 	
 	

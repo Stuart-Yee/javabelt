@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.stuartyee.javabelt.models.User;
 import com.stuartyee.javabelt.repositories.UserRepository;
-import com.stuartyee.javabelt.validators.UserValidator;
 
 @Service
 public class UserService {
@@ -41,11 +40,18 @@ public class UserService {
 		}
 	}
 	
-	//Create or update
+	//Create
 	public void saveUser(User user) {
 		String hashpassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
 		user.setPassword(hashpassword);
 		uRepo.save(user);
+	}
+	
+	//update
+	public User updateUser(User user) {
+		String hashpassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
+		user.setPassword(hashpassword);
+		return this.uRepo.save(user);
 	}
 	
 	//Find by email
@@ -71,7 +77,27 @@ public class UserService {
 			}
 		}
 	}
-
+	
+	//remove admin privileges 
+	public void demoteUser(User user) {
+		user.setPermissions(0);
+		uRepo.save(user);
+	}
+	
+	//give a user admin privileges
+	public void promoteUser(User user) {
+		user.setPermissions(1);
+		uRepo.save(user);
+	}
+	
+	//reset password to 'password'
+	public void simplePasswordReset(User user) {
+		String hashpassword = BCrypt.hashpw("password", BCrypt.gensalt());
+		user.setPassword(hashpassword);
+		uRepo.save(user);
+		
+	}
+	
 }
 
 	

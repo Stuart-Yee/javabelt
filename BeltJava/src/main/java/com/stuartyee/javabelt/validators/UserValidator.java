@@ -37,5 +37,18 @@ public class UserValidator implements Validator{
         	errors.rejectValue("name", "Forbidden", "Don't do that!");
         }
     }
+    
+    public void validateEdit(Object target, Errors errors) {
+        User user = (User) target;
+        
+        if (!user.getPasswordConfirm().equals(user.getPassword())) {
+            // 3
+            errors.rejectValue("passwordConfirm", "Match", "password does not match SPY");
+        }   
+        
+        if(user.getName().contains("<script")) {
+        	errors.rejectValue("name", "Forbidden", "Don't do that!");
+        }
+    }
 
 }

@@ -14,8 +14,11 @@
 <body>
 	<div class="jumbotron jumbotron-fluid">
   		<div class="container">
-    		<h1 class="display-4">Great Ideas</h1>
-    		<p class="lead">Create. Collaborate. Innovate.</p>
+  			<img src="/images/bulb.png" alt="bulb" class="bulb">
+  			<div class="jumboText">
+    			<h1 class="display-4">Great Solutions</h1>
+    			<p class="lead">Create. Collaborate. Innovate.</p>
+    		</div>
     		
   		</div>
 	</div>

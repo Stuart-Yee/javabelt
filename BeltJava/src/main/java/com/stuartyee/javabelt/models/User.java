@@ -36,6 +36,8 @@ public class User {
 	@Email(message="Please enter using the standard email format")
 	private String email;
 	
+	private int permissions;
+	
 	@Size(min=8, message="Please enter a password at least 8 characters long")
 	private String password;
 	
@@ -68,6 +70,7 @@ public class User {
 	@PrePersist
 	protected void onCreate() {
 		this.createdAt = new Date();
+		this.permissions = 0;
 	}
 	
 	@PreUpdate
@@ -150,6 +153,16 @@ public class User {
 	public void setLikedIdeas(List<Idea> likedIdeas) {
 		this.likedIdeas = likedIdeas;
 	}
+
+	public int getPermissions() {
+		return permissions;
+	}
+
+	public void setPermissions(int permissions) {
+		this.permissions = permissions;
+	}
+	
+	
 
 //	public List<Like> getLikes() {
 //		return likes;

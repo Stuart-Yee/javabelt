@@ -14,8 +14,11 @@
 		<div class="container">
 			<div class="jumbotron jumbotron-fluid">
   				<div class="container">
-    					<h1 class="display-4">Great Ideas</h1>
-    					<p class="lead">Welcome, <c:out value="${loggedIn.name }"/>
+  						<img src="/images/bulb.png" alt="bulb" class="bulb">
+  						<div class="jumboText">
+    						<h1 class="display-4">Great Solutions</h1>
+    						<p class="lead">Welcome, <c:out value="${loggedIn.name }"/>
+    					
     					<span id="smallnav">
 				<c:choose>
 					<c:when test="${loggedIn.id == 0}">
@@ -26,8 +29,15 @@
 					</c:otherwise>
 				</c:choose> |
 				<a href="/ideas">Ideas Dashboard</a>
+				| <a href="users/${loggedIn.id}/edit">Edit Profile</a>
+				<c:choose>
+					<c:when test="${loggedIn.permissions == 1 }">
+						| <a href="/users">Users</a>
+					</c:when>
+				</c:choose>
 			 | <a href="/logout">Logout</a></span>
 			 </p>
+			 </div>
   				</div>
 		</div>
 			<hr>
